@@ -1,0 +1,39 @@
+<resources>
+    <string name="app_name">ToDo App</string>
+    <string name="num">Num</string>
+    <string name="task">task</string>
+    <string name="com">com</string>
+    <string name="num_sign">#</string>
+    <string name="header_task">Задание</string>
+    <string name="header_comp">✔</string>
+    <string name="add_dialog_head">Добавить запись</string>
+    <string name="ok">ОК</string>
+    <string name="cancel">Отмена</string>
+    <string name="detail_head">Детали задания</string>
+    <string name="complete_task">Завершить</string>
+    <string name="close">Закрыть</string>
+    <string name="close_task">Завершить задание</string>
+    <string name="detail_dial_task_name">Задание</string>
+    <string name="detail_dial_add_date">Дата добавления</string>
+    <string name="detail_dial_end_date">Дата завершения</string>
+    <string name="detail_dial_descr">Описание</string>
+    <string-array name="groups">
+        <item>Все</item>
+        <item>Не выполненные</item>
+        <item>Выполненные</item>
+        <item>Отмененные</item>
+        <item>Архивные</item>
+    </string-array>
+    <string name="to_archive">Архивировать</string>
+    <string name="to_cancelled">Отменить</string>
+    <string name="archived">Архивировано</string>
+    <string name="cancelled">Отменено</string>
+    <string name="menu_active">Активные</string>
+    <string name="menu_incomplete">Не завешенные</string>
+    <string name="menu_complete">Завершенные</string>
+    <string name="menu_cancelled">Отмененные</string>
+    <string name="menu_archive">Архив</string>
+    <string name="undo">Отменить</string>
+    <string name="task_cancelled">Задание отменено</string>
+    <string name="task_arcvhived">Задание архивировано</string>
+</resources>
