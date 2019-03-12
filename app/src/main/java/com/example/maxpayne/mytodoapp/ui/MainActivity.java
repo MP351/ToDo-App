@@ -1,34 +1,28 @@
 package com.example.maxpayne.mytodoapp.ui;
 
-import android.app.Activity;
-import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModelProvider;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.AppCompatSpinner;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.view.Menu;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
+import android.view.MenuItem;
 
 import com.example.maxpayne.mytodoapp.recycler_view.ItemTouchHelperCallback;
 import com.example.maxpayne.mytodoapp.recycler_view.ListRecyclerViewAdapter;
 import com.example.maxpayne.mytodoapp.recycler_view.TaskViewModel;
-import com.example.maxpayne.mytodoapp.ui.AddDialog;
-import com.example.maxpayne.mytodoapp.ui.DetailTaskDialog;
 import com.example.maxpayne.mytodoapp.R;
 import com.example.maxpayne.mytodoapp.db.DbContract;
 import com.example.maxpayne.mytodoapp.db.dao.Task;
-
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements AddDialog.NoticeDialogListener,
         DetailTaskDialog.NoticeDialogListener, ListRecyclerViewAdapter.dbWorkListener {
@@ -40,6 +34,10 @@ public class MainActivity extends AppCompatActivity implements AddDialog.NoticeD
     ItemTouchHelperCallback ithc;
     ConstraintLayout cl;
     AppCompatActivity activity = this;
+    NavigationView nv;
+    DrawerLayout dl;
+    Integer lastActiveAction = R.id.nav_active;
+    final String LAST_ACTION = "ACTION___";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -47,20 +45,18 @@ public class MainActivity extends AppCompatActivity implements AddDialog.NoticeD
         setContentView(R.layout.activity_main_rv);
         initViews();
 
-        myTb.setNavigationIcon(R.mipmap.icon_launcher);
-        setSupportActionBar(myTb);
-
-        ithc = new ItemTouchHelperCallback(lrva);
-        ItemTouchHelper touchHelper = new ItemTouchHelper(ithc);
-        touchHelper.attachToRecyclerView(rv);
-
         tvm = ViewModelProvider.AndroidViewModelFactory
                 .getInstance(getApplication()).create(TaskViewModel.class);
 
-        tvm.getTasks().observe(this, (tasks) -> lrva.setData(tasks));
-
-
         fab.setOnClickListener((view -> openAddingDialog()));
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        query(lastActiveAction);
+        tvm.getTasks().observe(this, (tasks) -> lrva.setData(tasks));
     }
 
     public void openAddingDialog() {
@@ -68,53 +64,71 @@ public class MainActivity extends AppCompatActivity implements AddDialog.NoticeD
         addDialog.show(getSupportFragmentManager(), "AddDiag");
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        final String[] array = getResources().getStringArray(R.array.groups);
-        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1,
-                array);
+    private void initViews() {
+        rv = findViewById(R.id.rvList);
+        myTb = findViewById(R.id.RvTb);
+        fab = findViewById(R.id.RvFab);
+        cl = findViewById(R.id.cl_main);
+        nv = findViewById(R.id.nv);
+        dl = findViewById(R.id.drawer_layout);
 
-        AppCompatSpinner spinner = findViewById(R.id.ab_menu_spinner);
-        spinner.setAdapter(adapter);
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                tvm.getTasks().removeObservers(activity);
-                switch (position) {
-                    //Active
-                    case 0:
-                        ithc.setSwipeEnabled(true);
-                        tvm.queryActive();
-                        break;
-                    //Incomplete
-                    case 1:
-                        ithc.setSwipeEnabled(true);
-                        tvm.queryIncomplete();
-                        break;
-                    //Complete
-                    case 2:
-                        ithc.setSwipeEnabled(true);
-                        tvm.queryComplete();
-                        break;
-                    //Cancelled
-                    case 3:
-                        ithc.setSwipeEnabled(false);
-                        tvm.queryCancelled();
-                        break;
-                    //Archived
-                    case 4:
-                        ithc.setSwipeEnabled(false);
-                        tvm.queryArchived();
-                        break;
-                }
-                tvm.getTasks().observe(activity, (tasks) -> lrva.setData(tasks));
-            }
+        setSupportActionBar(myTb);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
+        nv.setNavigationItemSelectedListener(menuItem -> {
+            menuItem.setChecked(true);
+            query(menuItem.getItemId());
+            dl.closeDrawers();
+            return true;
         });
-        return super.onCreateOptionsMenu(menu);
+
+        ithc = new ItemTouchHelperCallback(lrva);
+        ItemTouchHelper touchHelper = new ItemTouchHelper(ithc);
+        touchHelper.attachToRecyclerView(rv);
+
+        lrva = new ListRecyclerViewAdapter(this, getSupportFragmentManager());
+        rv.setLayoutManager(new LinearLayoutManager(this));
+        rv.setAdapter(lrva);
+    }
+
+    private void query(Integer menuItem) {
+        tvm.getTasks().removeObservers(activity);
+        switch (menuItem) {
+            //Active
+            case R.id.nav_active:
+                ithc.setSwipeEnabled(true);
+                tvm.queryActive();
+                myTb.setTitle(R.string.title_active);
+                break;
+            //Incomplete
+            case R.id.nav_incomplete:
+                ithc.setSwipeEnabled(true);
+                tvm.queryIncomplete();
+                myTb.setTitle(R.string.title_incomplete);
+                break;
+            //Complete
+            case R.id.nav_complete:
+                ithc.setSwipeEnabled(true);
+                tvm.queryComplete();
+                myTb.setTitle(R.string.title_complete);
+                break;
+            //Cancelled
+            case R.id.nav_cancelled:
+                ithc.setSwipeEnabled(false);
+                tvm.queryCancelled();
+                myTb.setTitle(R.string.title_cancelled);
+                break;
+            //Archived
+            case R.id.nav_archive:
+                ithc.setSwipeEnabled(false);
+                tvm.queryArchived();
+                myTb.setTitle(R.string.title_active);
+                break;
+        }
+
+        tvm.getTasks().observe(activity, (tasks) -> lrva.setData(tasks));
     }
 
     @Override
@@ -128,17 +142,6 @@ public class MainActivity extends AppCompatActivity implements AddDialog.NoticeD
         t1.end_date = System.currentTimeMillis();
         t1.complete = DbContract.ToDoEntry.COMPLETE_CODE;
         tvm.updateTask(t1);
-    }
-
-    private void initViews() {
-        rv = findViewById(R.id.rvList);
-        myTb = findViewById(R.id.RvTb);
-        fab = findViewById(R.id.RvFab);
-        cl = findViewById(R.id.cl_main);
-
-        lrva = new ListRecyclerViewAdapter(this, getSupportFragmentManager());
-        rv.setLayoutManager(new LinearLayoutManager(this));
-        rv.setAdapter(lrva);
     }
 
     @Override
@@ -176,5 +179,28 @@ public class MainActivity extends AppCompatActivity implements AddDialog.NoticeD
             }
         }));
         snb.show();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putInt(LAST_ACTION, lastActiveAction);
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        lastActiveAction = savedInstanceState.getInt(LAST_ACTION);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                dl.openDrawer(GravityCompat.START);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
