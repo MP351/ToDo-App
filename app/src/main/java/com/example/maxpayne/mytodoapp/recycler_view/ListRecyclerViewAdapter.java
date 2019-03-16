@@ -1,12 +1,15 @@
 package com.example.maxpayne.mytodoapp.recycler_view;
 
 import android.app.Activity;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.recyclerview.extensions.AsyncListDiffer;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
 
 import com.example.maxpayne.mytodoapp.ui.DetailTaskDialog;
@@ -45,15 +48,20 @@ public class ListRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewHo
     public void onBindViewHolder(@NonNull RecyclerViewHolder recyclerViewHolder, int i) {
         Task task = mDiffer.getCurrentList().get(i);
 
-        recyclerViewHolder.tvNumber.setText(String.valueOf(task._id));
-        recyclerViewHolder.chtvTask.setText(task.task);
-        recyclerViewHolder.chtvTask.setChecked(task.complete == DbContract.ToDoEntry.COMPLETE_CODE);
+        /*
+            recyclerViewHolder.tvNumber.setText(String.valueOf(task._id));
+            recyclerViewHolder.chtvTask.setText(task.task);
+            recyclerViewHolder.chtvTask.setChecked(task.complete == DbContract.ToDoEntry.COMPLETE_CODE);
+*/
 
+        recyclerViewHolder.bindView(task);
         recyclerViewHolder.itemView.setOnClickListener(view -> {
             DetailTaskDialog detailTaskDialog = new DetailTaskDialog();
             detailTaskDialog.setTask(task);
             detailTaskDialog.show(fm, "showDetailDialog");
+
         });
+
     }
 
     @Override

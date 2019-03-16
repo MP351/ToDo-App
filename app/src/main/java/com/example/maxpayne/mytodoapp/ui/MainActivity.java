@@ -84,13 +84,13 @@ public class MainActivity extends AppCompatActivity implements AddDialog.NoticeD
             return true;
         });
 
-        ithc = new ItemTouchHelperCallback(lrva);
-        ItemTouchHelper touchHelper = new ItemTouchHelper(ithc);
-        touchHelper.attachToRecyclerView(rv);
-
         lrva = new ListRecyclerViewAdapter(this, getSupportFragmentManager());
         rv.setLayoutManager(new LinearLayoutManager(this));
         rv.setAdapter(lrva);
+
+        ithc = new ItemTouchHelperCallback(lrva);
+        ItemTouchHelper touchHelper = new ItemTouchHelper(ithc);
+        touchHelper.attachToRecyclerView(rv);
     }
 
     private void query(Integer menuItem) {
