@@ -1,17 +1,17 @@
 package com.example.maxpayne.mytodoapp.recycler_view;
 
 import android.app.Activity;
-import android.os.Build;
-import android.support.annotation.NonNull;
-import android.support.v4.app.FragmentManager;
-import android.support.v7.recyclerview.extensions.AsyncListDiffer;
-import android.support.v7.util.DiffUtil;
-import android.support.v7.widget.RecyclerView;
+
+import androidx.annotation.NonNull;
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.FragmentManager;
+import androidx.recyclerview.widget.AsyncListDiffer;
+import androidx.recyclerview.widget.DiffUtil;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
-import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
 
+import com.example.maxpayne.mytodoapp.databinding.TaskItemBinding;
 import com.example.maxpayne.mytodoapp.ui.DetailTaskDialog;
 import com.example.maxpayne.mytodoapp.R;
 import com.example.maxpayne.mytodoapp.db.DbContract;
@@ -23,6 +23,7 @@ public class ListRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewHo
     private AsyncListDiffer<Task> mDiffer = new AsyncListDiffer<>(this, DIFF_CALLBACK);
     private FragmentManager fm;
     private dbWorkListener mDbWorkListener;
+    private Activity activity;
 
     public final int ACTION_CODE_CANCEL = 0;
     public final int ACTION_CODE_TO_ARCHIVE = 1;
@@ -30,6 +31,7 @@ public class ListRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewHo
     public ListRecyclerViewAdapter(Activity activity, FragmentManager fm) {
         this.fm = fm;
 
+        this.activity = activity;
         try {
             mDbWorkListener = (dbWorkListener) activity;
         } catch (ClassCastException e) {
@@ -40,28 +42,22 @@ public class ListRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewHo
     @NonNull
     @Override
     public RecyclerViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        return new RecyclerViewHolder(LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.item, viewGroup, false));
+        TaskItemBinding binding = DataBindingUtil.inflate(
+                LayoutInflater.from(viewGroup.getContext()),
+                R.layout.task_item,
+                viewGroup,
+                false
+        );
+
+        binding.setOnClickHandler((TaskItemClickListener) activity);
+        return new RecyclerViewHolder(binding);
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerViewHolder recyclerViewHolder, int i) {
         Task task = mDiffer.getCurrentList().get(i);
 
-        /*
-            recyclerViewHolder.tvNumber.setText(String.valueOf(task._id));
-            recyclerViewHolder.chtvTask.setText(task.task);
-            recyclerViewHolder.chtvTask.setChecked(task.complete == DbContract.ToDoEntry.COMPLETE_CODE);
-*/
-
         recyclerViewHolder.bindView(task);
-        recyclerViewHolder.itemView.setOnClickListener(view -> {
-            DetailTaskDialog detailTaskDialog = new DetailTaskDialog();
-            detailTaskDialog.setTask(task);
-            detailTaskDialog.show(fm, "showDetailDialog");
-
-        });
-
     }
 
     @Override

@@ -34,4 +34,7 @@
     <string name="title_complete">Завершенные задания</string>
     <string name="title_cancelled">Отмененные задания</string>
     <string name="title_archived">Архивные задания</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

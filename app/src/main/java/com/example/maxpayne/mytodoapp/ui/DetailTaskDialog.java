@@ -3,16 +3,21 @@ package com.example.maxpayne.mytodoapp.ui;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.DialogFragment;
+
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.maxpayne.mytodoapp.R;
+import com.example.maxpayne.mytodoapp.databinding.DetailTaskBinding;
 import com.example.maxpayne.mytodoapp.db.dao.Task;
 
 import java.text.SimpleDateFormat;
@@ -20,67 +25,53 @@ import java.util.Date;
 import java.util.Locale;
 
 public class DetailTaskDialog extends DialogFragment {
-    Task task;
-    private TextView tvTask;
-    private TextView tvAddDate;
-    private TextView tvEndDate;
-    private TextView tvDescription;
-    View view;
-    NoticeDialogListener mListener;
+    private Task task;
+    private DetailTaskBinding binding;
+    private NoticeDialogListener mListener;
 
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        prepareDialog();
+        binding = DataBindingUtil.inflate(
+                getActivity().getLayoutInflater(),
+                R.layout.detail_task,
+                null,
+                false);
+        binding.setTask(task);
+        binding.setDialog(this);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setMessage(R.string.detail_head)
-                .setView(view)
+                .setView(binding.getRoot())
                 .setNeutralButton(R.string.close, (dialogInterface, i) -> dismiss());
-
+        Log.d("TEST_DIALOG", "onCreateDialog");
         return builder.create();
     }
 
     public void setTask(Task task) {
         this.task = task;
+        Log.d("TEST_DIALOG", "setTask");
     }
 
-    private void prepareDialog() {
-        view = getActivity().getLayoutInflater().inflate(R.layout.detail_task, null);
-        tvTask = view.findViewById(R.id.tvTaskName);
-        tvAddDate = view.findViewById(R.id.tvAddDate);
-        tvEndDate = view.findViewById(R.id.tvEndDate);
-        tvDescription = view.findViewById(R.id.tvDescription);
-
-        tvTask.setText(task.task);
-        tvDescription.setText(task.description);
-
+    public String convertDate(long timestamp) {
         SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss", Locale.getDefault());
-        tvAddDate.setText(sdf.format(new Date(task.add_date)));
-        if (task.end_date != null) {
-            tvEndDate.setText(sdf.format(new Date(task.end_date)));
-            tvEndDate.setTextColor(Color.BLACK);
-        } else {
-            tvEndDate.setText(R.string.close_task);
-            tvEndDate.setTextColor(Color.BLUE);
-        }
-
-        tvEndDate.setOnClickListener(view -> {
-                mListener.closeTask(task);
-                dismiss();
-            });
+        Log.d("TEST_DIALOG", "convert");
+        return sdf.format(new Date(timestamp));
     }
 
     @Override
     public void onAttach(Context context) {
-        super.onAttach(context);
-
         try {
             mListener = (NoticeDialogListener) getActivity();
         } catch (ClassCastException e) {
             e.printStackTrace();
         }
+        super.onAttach(context);
+    }
 
+    public void closeAndDismiss(Task task) {
+        mListener.closeTask(task);
+        dismiss();
     }
 
     public interface NoticeDialogListener {
