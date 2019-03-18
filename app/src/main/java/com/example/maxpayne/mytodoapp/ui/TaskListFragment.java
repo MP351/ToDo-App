@@ -47,6 +47,7 @@ public class TaskListFragment extends Fragment {
         rv.setAdapter(adapter);
         ItemTouchHelper th = new ItemTouchHelper(ithc);
         th.attachToRecyclerView(rv);
+
         return rv;
     }
 }

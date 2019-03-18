@@ -1,6 +1,7 @@
 package com.example.maxpayne.mytodoapp.recycler_view;
 
 import android.app.Application;
+import android.util.Log;
 
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
@@ -16,8 +17,8 @@ import java.util.List;
 
 public class TaskViewModel extends AndroidViewModel {
     private TaskRepository taskRepository;
-    private MutableLiveData<Integer> queryTrigger;
-    private final LiveData<List<Task>> tasks = Transformations.switchMap(queryTrigger,
+    private MutableLiveData<Integer> queryTrigger = new MutableLiveData<>();
+    public final LiveData<List<Task>> tasks = Transformations.switchMap(queryTrigger,
             code -> {
                 switch (code) {
                     case 0:
@@ -34,13 +35,14 @@ public class TaskViewModel extends AndroidViewModel {
                     case 4:
                         return taskRepository.getArchived();
                 }
-                return null;
+                return taskRepository.getActive();
             });
 
     public TaskViewModel(@NonNull Application application) {
         super(application);
 
         taskRepository = new TaskRepository(application);
+        queryTrigger.setValue(0);
         //tasks = taskRepository.getTasks();
     }
 
