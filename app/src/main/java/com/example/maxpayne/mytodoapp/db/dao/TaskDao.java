@@ -32,7 +32,7 @@ public interface TaskDao {
             DbContract.ToDoEntry.COLUMN_NAME_COMPLETE + " = :completeCode";
 
     @Query(GET_All_SQL)
-    LiveData<List<Task>> getAllAsLiveData();
+    LiveData<List<Task>> getAll();
 
     @Query(GET_TEMPLATE)
     LiveData<List<Task>> getTasks(int archivedCode, int completeCode);

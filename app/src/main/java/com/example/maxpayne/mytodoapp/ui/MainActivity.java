@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity implements AddDialog.NoticeD
     }
 
     private void initViews() {
-        rv = findViewById(R.id.rvList);
+        //rv = findViewById(R.id.rvList);
         myTb = findViewById(R.id.RvTb);
         fab = findViewById(R.id.RvFab);
         cl = findViewById(R.id.cl_main);
@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity implements AddDialog.NoticeD
             return true;
         });
 
-        lrva = new ListRecyclerViewAdapter(this, getSupportFragmentManager());
+        //lrva = new ListRecyclerViewAdapter(this, getSupportFragmentManager());
         rv.setLayoutManager(new LinearLayoutManager(this));
         rv.setAdapter(lrva);
 

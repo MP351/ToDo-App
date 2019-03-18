@@ -12,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import com.example.maxpayne.mytodoapp.databinding.TaskItemBinding;
-import com.example.maxpayne.mytodoapp.ui.DetailTaskDialog;
 import com.example.maxpayne.mytodoapp.R;
 import com.example.maxpayne.mytodoapp.db.DbContract;
 import com.example.maxpayne.mytodoapp.db.dao.Task;
@@ -21,16 +20,13 @@ import java.util.List;
 
 public class ListRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewHolder> implements ItemTouchHelperAdapter {
     private AsyncListDiffer<Task> mDiffer = new AsyncListDiffer<>(this, DIFF_CALLBACK);
-    private FragmentManager fm;
     private dbWorkListener mDbWorkListener;
     private Activity activity;
 
     public final int ACTION_CODE_CANCEL = 0;
     public final int ACTION_CODE_TO_ARCHIVE = 1;
 
-    public ListRecyclerViewAdapter(Activity activity, FragmentManager fm) {
-        this.fm = fm;
-
+    public ListRecyclerViewAdapter(Activity activity) {
         this.activity = activity;
         try {
             mDbWorkListener = (dbWorkListener) activity;

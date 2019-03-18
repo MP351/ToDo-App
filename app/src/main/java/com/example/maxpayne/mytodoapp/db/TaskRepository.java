@@ -24,7 +24,7 @@ public class TaskRepository{
     }
 
     public LiveData<List<Task>> getTasks() {
-        return db.taskDao().getAllAsLiveData();
+        return db.taskDao().getAll();
     }
 
     public LiveData<List<Task>> getActive() {

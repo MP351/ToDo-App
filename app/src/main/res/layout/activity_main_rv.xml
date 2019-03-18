@@ -10,13 +10,11 @@
         android:layout_height="match_parent"
         android:fitsSystemWindows="true"
         tools:openDrawer="start">
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/cl_main"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             tools:context=".ui.MainActivity">
-
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/RvTb"
                 android:layout_width="match_parent"
@@ -29,19 +27,16 @@
                 app:popupTheme="@style/AppTheme">
             </androidx.appcompat.widget.Toolbar>
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvList"
+            <FrameLayout
+                android:id="@+id/container"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginRight="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/RvTb" />
-
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/RvFab"
                 style="@style/AppTheme"
@@ -51,7 +46,7 @@
                 android:layout_marginBottom="24dp"
                 android:src="@android:drawable/ic_input_add"
                 app:backgroundTint="@color/colorAccent"
-                app:layout_constraintBottom_toBottomOf="@+id/rvList"
+                app:layout_constraintBottom_toBottomOf="@+id/container"
                 app:layout_constraintEnd_toEndOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
         <com.google.android.material.navigation.NavigationView
