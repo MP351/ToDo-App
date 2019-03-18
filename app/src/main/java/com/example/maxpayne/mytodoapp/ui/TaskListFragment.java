@@ -32,7 +32,9 @@ public class TaskListFragment extends Fragment {
                 .getInstance(getActivity().getApplication()).create(TaskViewModel.class);
         adapter = new ListRecyclerViewAdapter(getActivity());
 
-        tvm.getTasks().observe(this,
+        /*tvm.getTasks().observe(this,
+                tasks -> adapter.setData(tasks));*/
+        tvm.tasks.observe(this,
                 tasks -> adapter.setData(tasks));
 
         ithc = new ItemTouchHelperCallback(adapter);

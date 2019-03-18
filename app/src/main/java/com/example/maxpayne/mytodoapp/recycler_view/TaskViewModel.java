@@ -22,6 +22,7 @@ public class TaskViewModel extends AndroidViewModel {
             code -> {
                 switch (code) {
                     case 0:
+                        Log.d("TEST_TAG", "case 0");
                         return taskRepository.getActive();
                     case 1:
                         return taskRepository.getTasks(DbContract.ToDoEntry.NOT_ARCHIVED_CODE,
@@ -33,6 +34,7 @@ public class TaskViewModel extends AndroidViewModel {
                         return taskRepository.getTasks(DbContract.ToDoEntry.NOT_ARCHIVED_CODE,
                                 DbContract.ToDoEntry.CANCEL_CODE);
                     case 4:
+                        Log.d("TEST_TAG", "case 4");
                         return taskRepository.getArchived();
                 }
                 return taskRepository.getActive();

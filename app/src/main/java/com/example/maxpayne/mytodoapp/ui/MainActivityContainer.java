@@ -20,7 +20,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 
-public class MainActivityContainer extends AppCompatActivity implements TaskItemClickListener {
+public class MainActivityContainer extends AppCompatActivity implements TaskItemClickListener, AddDialog.NoticeDialogListener {
     Toolbar tb;
     DrawerLayout dl;
     FloatingActionButton fab;
@@ -56,6 +56,11 @@ public class MainActivityContainer extends AppCompatActivity implements TaskItem
                     .add(R.id.container, new TaskListFragment())
                     .commit();
         }
+
+        fab.setOnClickListener(view -> {
+            AddDialog addDialog = new AddDialog();
+            addDialog.show(getSupportFragmentManager(), "add");
+        });
     }
 
     private void query(MenuItem item) {
@@ -80,6 +85,29 @@ public class MainActivityContainer extends AppCompatActivity implements TaskItem
 
     @Override
     public void onItemClick(Task task) {
+        DetailTaskFragment dtf = new DetailTaskFragment();
+        dtf.setTask(task);
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.container, dtf)
+                .setCustomAnimations(
+                        android.R.anim.slide_in_left,
+                        android.R.anim.slide_out_right)
+                .addToBackStack(null)
+                .commit();
+    }
 
+    @Override
+    public void onDialogPositiveClick(String taskName, String description) {
+        tvm.addTask(new Task(taskName, description));
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                dl.openDrawer(GravityCompat.START);
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
