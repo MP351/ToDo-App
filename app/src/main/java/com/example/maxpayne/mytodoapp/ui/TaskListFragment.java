@@ -1,7 +1,6 @@
 package com.example.maxpayne.mytodoapp.ui;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +13,6 @@ import com.example.maxpayne.mytodoapp.recycler_view.TaskViewModel;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -43,14 +41,15 @@ public class TaskListFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         rv = (RecyclerView) inflater.inflate(R.layout.rv_layout, container, false);
-        rv = rv.findViewById(R.id.rvTasks);
+        //rv = rv.findViewById(R.id.rvTasks);
         rv.setLayoutManager(new LinearLayoutManager(getContext()));
         rv.setAdapter(adapter);
         ItemTouchHelper th = new ItemTouchHelper(ithc);
         th.attachToRecyclerView(rv);
 
+        tvm.isSwipeEnabled().observe(getActivity(),
+                bool -> ithc.setSwipeEnabled(bool));
+
         return rv;
     }
-
-
 }

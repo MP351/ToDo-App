@@ -1,8 +1,6 @@
 package com.example.maxpayne.mytodoapp.ui;
 
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.MenuItem;
 
 import com.example.maxpayne.mytodoapp.R;
@@ -20,7 +18,6 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
 public class MainActivityContainer extends AppCompatActivity implements TaskItemClickListener, AddDialog.NoticeDialogListener {
@@ -91,8 +88,8 @@ public class MainActivityContainer extends AppCompatActivity implements TaskItem
         DetailTaskFragment dtf = new DetailTaskFragment();
         dtf.setTask(task);
         getSupportFragmentManager().beginTransaction()
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                 .replace(R.id.container, dtf)
-                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                 .addToBackStack(null)
                 .commit();
     }

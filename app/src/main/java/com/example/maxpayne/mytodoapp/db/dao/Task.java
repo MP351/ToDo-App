@@ -14,6 +14,10 @@ import java.util.Objects;
 @Entity(tableName = DbContract.ToDoEntry.TABLE_NAME)
 public class Task {
 
+    @Ignore
+    public Task() {
+    }
+
     public Task(@NonNull Integer _id, String task, @NonNull Long add_date, @Nullable Long end_date,
                 @NonNull Integer complete, String description, @NonNull Integer archived) {
         this._id = _id;

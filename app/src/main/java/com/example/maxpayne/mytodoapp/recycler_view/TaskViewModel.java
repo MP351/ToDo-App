@@ -22,23 +22,29 @@ public class TaskViewModel extends AndroidViewModel {
     private final String CANCEL      = "CANCEL";
     private final String ARCHIVED    = "ARCHIVED";
 
+    private MutableLiveData<Boolean> swipeEnabled = new MutableLiveData<>();
     private TaskRepository taskRepository;
     private MutableLiveData<String> queryTrigger = new MutableLiveData<>();
     private final LiveData<List<Task>> tasks = Transformations.switchMap(queryTrigger,
             code -> {
                 switch (code) {
                     case ACTIVE:
+                        swipeEnabled.setValue(true);
                         return taskRepository.getActive();
                     case INCOMPLETE:
+                        swipeEnabled.setValue(true);
                         return taskRepository.getTasks(DbContract.ToDoEntry.NOT_ARCHIVED_CODE,
                                 DbContract.ToDoEntry.INCOMPLETE_CODE);
                     case COMPLETE:
+                        swipeEnabled.setValue(true);
                         return taskRepository.getTasks(DbContract.ToDoEntry.NOT_ARCHIVED_CODE,
                                 DbContract.ToDoEntry.COMPLETE_CODE);
                     case CANCEL:
+                        swipeEnabled.setValue(false);
                         return taskRepository.getTasks(DbContract.ToDoEntry.NOT_ARCHIVED_CODE,
                                 DbContract.ToDoEntry.CANCEL_CODE);
                     case ARCHIVED:
+                        swipeEnabled.setValue(false);
                         return taskRepository.getArchived();
                 }
                 return taskRepository.getActive();
@@ -85,5 +91,13 @@ public class TaskViewModel extends AndroidViewModel {
 
     public void updateTask(Task task) {
         taskRepository.updateTask(task);
+    }
+
+    public void setSwipeEnabled(boolean enabled){
+        swipeEnabled.setValue(enabled);
+    }
+
+    public LiveData<Boolean> isSwipeEnabled() {
+        return swipeEnabled;
     }
 }
