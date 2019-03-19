@@ -1,6 +1,7 @@
 package com.example.maxpayne.mytodoapp.ui;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -28,15 +30,12 @@ public class TaskListFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        tvm = ViewModelProvider.AndroidViewModelFactory
-                .getInstance(getActivity().getApplication()).create(TaskViewModel.class);
+        tvm = ViewModelProviders.of(getActivity()).get(TaskViewModel.class);
         adapter = new ListRecyclerViewAdapter(getActivity());
 
-        /*tvm.getTasks().observe(this,
-                tasks -> adapter.setData(tasks));*/
-        tvm.tasks.observe(this,
-                tasks -> adapter.setData(tasks));
 
+        tvm.getTasks().observe(getActivity(),
+                tasks -> adapter.setData(tasks));
         ithc = new ItemTouchHelperCallback(adapter);
     }
 
@@ -52,4 +51,6 @@ public class TaskListFragment extends Fragment {
 
         return rv;
     }
+
+
 }

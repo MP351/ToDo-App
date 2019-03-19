@@ -1,6 +1,7 @@
 package com.example.maxpayne.mytodoapp.ui;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 
@@ -18,7 +19,9 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
 
 public class MainActivityContainer extends AppCompatActivity implements TaskItemClickListener, AddDialog.NoticeDialogListener {
     Toolbar tb;
@@ -35,8 +38,8 @@ public class MainActivityContainer extends AppCompatActivity implements TaskItem
         fab = findViewById(R.id.RvFab);
         nv = findViewById(R.id.nv);
         dl = findViewById(R.id.drawer_layout);
-        tvm = ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication())
-                .create(TaskViewModel.class);
+
+        tvm = ViewModelProviders.of(this).get(TaskViewModel.class);
 
         nv.setNavigationItemSelectedListener(menuItem -> {
             menuItem.setChecked(true);
@@ -89,9 +92,7 @@ public class MainActivityContainer extends AppCompatActivity implements TaskItem
         dtf.setTask(task);
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.container, dtf)
-                .setCustomAnimations(
-                        android.R.anim.slide_in_left,
-                        android.R.anim.slide_out_right)
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                 .addToBackStack(null)
                 .commit();
     }

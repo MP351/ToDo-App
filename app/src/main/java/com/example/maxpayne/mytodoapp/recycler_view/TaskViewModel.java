@@ -16,25 +16,29 @@ import com.example.maxpayne.mytodoapp.db.TaskRepository;
 import java.util.List;
 
 public class TaskViewModel extends AndroidViewModel {
+    private final String ACTIVE      = "ACTIVE";
+    private final String INCOMPLETE  = "INCOMPLETE";
+    private final String COMPLETE    = "COMPLETE";
+    private final String CANCEL      = "CANCEL";
+    private final String ARCHIVED    = "ARCHIVED";
+
     private TaskRepository taskRepository;
-    private MutableLiveData<Integer> queryTrigger = new MutableLiveData<>();
-    public final LiveData<List<Task>> tasks = Transformations.switchMap(queryTrigger,
+    private MutableLiveData<String> queryTrigger = new MutableLiveData<>();
+    private final LiveData<List<Task>> tasks = Transformations.switchMap(queryTrigger,
             code -> {
                 switch (code) {
-                    case 0:
-                        Log.d("TEST_TAG", "case 0");
+                    case ACTIVE:
                         return taskRepository.getActive();
-                    case 1:
+                    case INCOMPLETE:
                         return taskRepository.getTasks(DbContract.ToDoEntry.NOT_ARCHIVED_CODE,
                                 DbContract.ToDoEntry.INCOMPLETE_CODE);
-                    case 2:
+                    case COMPLETE:
                         return taskRepository.getTasks(DbContract.ToDoEntry.NOT_ARCHIVED_CODE,
                                 DbContract.ToDoEntry.COMPLETE_CODE);
-                    case 3:
+                    case CANCEL:
                         return taskRepository.getTasks(DbContract.ToDoEntry.NOT_ARCHIVED_CODE,
                                 DbContract.ToDoEntry.CANCEL_CODE);
-                    case 4:
-                        Log.d("TEST_TAG", "case 4");
+                    case ARCHIVED:
                         return taskRepository.getArchived();
                 }
                 return taskRepository.getActive();
@@ -44,8 +48,7 @@ public class TaskViewModel extends AndroidViewModel {
         super(application);
 
         taskRepository = new TaskRepository(application);
-        queryTrigger.setValue(0);
-        //tasks = taskRepository.getTasks();
+        queryTrigger.setValue(ACTIVE);
     }
 
     public LiveData<List<Task>> getTasks() {
@@ -53,31 +56,23 @@ public class TaskViewModel extends AndroidViewModel {
     }
 
     public void queryArchived() {
-        //tasks = taskRepository.getArchived();
-        queryTrigger.setValue(4);
+        queryTrigger.setValue(ARCHIVED);
     }
 
     public void queryActive() {
-        //tasks = taskRepository.getActive();
-        queryTrigger.setValue(0);
+        queryTrigger.setValue(ACTIVE);
     }
 
     public void queryIncomplete() {
-        /*tasks = taskRepository.getTasks(DbContract.ToDoEntry.NOT_ARCHIVED_CODE,
-                DbContract.ToDoEntry.INCOMPLETE_CODE);*/
-        queryTrigger.setValue(1);
+        queryTrigger.setValue(INCOMPLETE);
     }
 
     public void queryComplete() {
-        /*tasks = taskRepository.getTasks(DbContract.ToDoEntry.NOT_ARCHIVED_CODE,
-                DbContract.ToDoEntry.COMPLETE_CODE);*/
-        queryTrigger.setValue(2);
+        queryTrigger.setValue(COMPLETE);
     }
 
     public void queryCancelled() {
-        /*tasks = taskRepository.getTasks(DbContract.ToDoEntry.NOT_ARCHIVED_CODE,
-                DbContract.ToDoEntry.CANCEL_CODE);*/
-        queryTrigger.setValue(3);
+        queryTrigger.setValue(CANCEL);
     }
 
     public void addTask(Task task) {

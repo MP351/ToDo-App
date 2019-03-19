@@ -17,11 +17,11 @@
 
         <TextView
             android:id="@+id/detail_tvTaskNameHead"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
-            android:layout_marginTop="32dp"
-            android:layout_marginEnd="8dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="32dp"
             android:text="@string/detail_dial_task_name"
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -32,14 +32,15 @@
 
         <TextView
             android:id="@+id/detail_tvTaskName"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:textSize="24sp"
+            android:ellipsize="end"
+            android:maxLines="2"
             android:text="@{task.task}"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
+            android:textColor="@android:color/black"
+            android:textSize="24sp"
+            app:layout_constraintEnd_toEndOf="@+id/detail_tvTaskNameHead"
             app:layout_constraintStart_toStartOf="@+id/detail_tvTaskNameHead"
             app:layout_constraintTop_toBottomOf="@+id/detail_tvTaskNameHead"
             tools:text="@string/detail_dial_task_name" />
@@ -51,8 +52,9 @@
             android:layout_marginTop="24dp"
             android:lines="2"
             android:singleLine="false"
-            android:textSize="18sp"
             android:text="@{ut.convertDate(task.add_date)}"
+            android:textColor="@android:color/black"
+            android:textSize="18sp"
             app:layout_constraintStart_toStartOf="@+id/detail_tvTaskName"
             app:layout_constraintTop_toBottomOf="@+id/detail_tvTaskName"
             tools:text="@string/detail_dial_add_date" />
@@ -61,48 +63,51 @@
             android:id="@+id/detail_tvEndDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="24dp"
             android:lines="2"
             android:singleLine="false"
-            android:textSize="18sp"
             android:text="@{task.end_date != null ? ut.convertDate(task.end_date) : @string/close_task}"
+            android:textColor="@{task.end_date != null ? @android:color/black : @android:color/holo_blue_dark}"
+            android:textSize="18sp"
             app:layout_constraintBaseline_toBaselineOf="@+id/detail_tvAddDate"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/detail_tvTaskName"
             tools:text="@string/detail_dial_end_date" />
-
-        <ScrollView
-            android:id="@+id/scrollView2"
-            android:layout_width="395dp"
-            android:layout_height="442dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
-            app:layout_constraintBottom_toTopOf="@+id/linearLayout"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/detail_tvAddDate">
-
-            <TextView
-                android:id="@+id/detail_tvDescription"
-                android:text="@{task.description}"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </ScrollView>
 
         <LinearLayout
             android:id="@+id/linearLayout"
-            android:layout_width="395dp"
-            android:layout_height="52dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginBottom="32dp"
             android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
+            app:layout_constraintEnd_toEndOf="@+id/nestedScrollView"
+            app:layout_constraintStart_toStartOf="@+id/nestedScrollView">
 
         </LinearLayout>
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/nestedScrollView"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="16dp"
+            android:fillViewport="true"
+            app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+            app:layout_constraintEnd_toEndOf="@+id/detail_tvEndDate"
+            app:layout_constraintStart_toStartOf="@+id/detail_tvAddDate"
+            app:layout_constraintTop_toBottomOf="@+id/detail_tvAddDate">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/detail_tvDescription"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:isScrollContainer="true"
+                    android:text="@{task.description}" />
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
