@@ -28,7 +28,7 @@
     <string name="menu_archive">Архив</string>
     <string name="undo">Отменить</string>
     <string name="task_cancelled">Задание отменено</string>
-    <string name="task_arcvhived">Задание архивировано</string>
+    <string name="task_archived">Задание архивировано</string>
     <string name="title_active">Активные задания</string>
     <string name="title_incomplete">Не завершенные задания</string>
     <string name="title_complete">Завершенные задания</string>

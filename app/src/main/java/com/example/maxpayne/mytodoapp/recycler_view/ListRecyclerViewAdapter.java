@@ -21,18 +21,14 @@ import java.util.List;
 public class ListRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewHolder> implements ItemTouchHelperAdapter {
     private AsyncListDiffer<Task> mDiffer = new AsyncListDiffer<>(this, DIFF_CALLBACK);
     private dbWorkListener mDbWorkListener;
-    private Activity activity;
+    private TaskItemClickListener mOnClickListener;
 
     public final int ACTION_CODE_CANCEL = 0;
     public final int ACTION_CODE_TO_ARCHIVE = 1;
 
-    public ListRecyclerViewAdapter(Activity activity) {
-        this.activity = activity;
-        try {
-            mDbWorkListener = (dbWorkListener) activity;
-        } catch (ClassCastException e) {
-            e.printStackTrace();
-        }
+    public ListRecyclerViewAdapter(dbWorkListener mDbWorkListener, TaskItemClickListener mOnClickListener) {
+        this.mOnClickListener = mOnClickListener;
+        this.mDbWorkListener = mDbWorkListener;
     }
 
     @NonNull
@@ -45,7 +41,7 @@ public class ListRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewHo
                 false
         );
 
-        binding.setOnClickHandler((TaskItemClickListener) activity);
+        binding.setOnClickHandler(mOnClickListener);
         return new RecyclerViewHolder(binding);
     }
 
@@ -73,11 +69,11 @@ public class ListRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewHo
             switch (task.complete) {
                 case DbContract.ToDoEntry.INCOMPLETE_CODE:
                     task.complete = DbContract.ToDoEntry.CANCEL_CODE;
-                    mDbWorkListener.archiveOrCancelTask(task, ACTION_CODE_CANCEL);
+                    mDbWorkListener.archiveOrCancelTask(task, dbWorkListener.CANCEL_CODE);
                     break;
                 case DbContract.ToDoEntry.COMPLETE_CODE:
                     task.archived = DbContract.ToDoEntry.ARCHIVED_CODE;
-                    mDbWorkListener.archiveOrCancelTask(task, ACTION_CODE_TO_ARCHIVE);
+                    mDbWorkListener.archiveOrCancelTask(task, dbWorkListener.ARCHIVE_CODE);
                     break;
             }
         }
@@ -98,6 +94,9 @@ public class ListRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewHo
     };
 
     public interface dbWorkListener {
+        int CANCEL_CODE = 0;
+        int ARCHIVE_CODE = 1;
+
         void deleteTask(Task task);
         void updateTask(Task task);
         void archiveOrCancelTask(Task task, int CODE);
