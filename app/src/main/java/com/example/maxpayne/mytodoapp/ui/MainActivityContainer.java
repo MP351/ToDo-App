@@ -36,7 +36,7 @@ public class MainActivityContainer extends AppCompatActivity
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_rv);
+        setContentView(R.layout.activity_main);
         tb = findViewById(R.id.RvTb);
         fab = findViewById(R.id.RvFab);
         nv = findViewById(R.id.nv);
