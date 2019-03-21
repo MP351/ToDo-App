@@ -106,7 +106,7 @@ public class MainActivityContainer extends AppCompatActivity
     @Override
     public void onItemClick(Task task) {
         DetailTaskFragment dtf = new DetailTaskFragment();
-        dtf.setTask(task);
+        tvm.setCurrentTask(task);
 
         getSupportFragmentManager().beginTransaction()
                 .setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right)

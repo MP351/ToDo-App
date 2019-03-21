@@ -1,10 +1,7 @@
 package com.example.maxpayne.mytodoapp.recycler_view;
 
-import android.app.Activity;
-
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.AsyncListDiffer;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
@@ -22,9 +19,6 @@ public class ListRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewHo
     private AsyncListDiffer<Task> mDiffer = new AsyncListDiffer<>(this, DIFF_CALLBACK);
     private dbWorkListener mDbWorkListener;
     private TaskItemClickListener mOnClickListener;
-
-    public final int ACTION_CODE_CANCEL = 0;
-    public final int ACTION_CODE_TO_ARCHIVE = 1;
 
     public ListRecyclerViewAdapter(dbWorkListener mDbWorkListener, TaskItemClickListener mOnClickListener) {
         this.mOnClickListener = mOnClickListener;
@@ -97,7 +91,7 @@ public class ListRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewHo
         int CANCEL_CODE = 0;
         int ARCHIVE_CODE = 1;
 
-        void deleteTask(Task task);
+        //void deleteTask(Task task);
         void updateTask(Task task);
         void archiveOrCancelTask(Task task, int CODE);
     }

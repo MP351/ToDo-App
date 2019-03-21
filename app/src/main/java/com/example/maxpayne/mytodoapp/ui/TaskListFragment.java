@@ -60,11 +60,11 @@ public class TaskListFragment extends Fragment implements ListRecyclerViewAdapte
 
         return rv;
     }
-
+    /*
     @Override
     public void deleteTask(Task task) {
         tvm.deleteTask(task);
-    }
+    }*/
 
     @Override
     public void updateTask(Task task) {

@@ -1,5 +1,6 @@
 package com.example.maxpayne.mytodoapp.ui;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,7 +9,9 @@ import android.view.ViewGroup;
 
 import com.example.maxpayne.mytodoapp.R;
 import com.example.maxpayne.mytodoapp.databinding.TaskDetailBinding;
+import com.example.maxpayne.mytodoapp.db.DbContract;
 import com.example.maxpayne.mytodoapp.db.dao.Task;
+import com.example.maxpayne.mytodoapp.recycler_view.TaskViewModel;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -18,12 +21,22 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
 
 public class DetailTaskFragment extends Fragment {
     private Task task;
+    private TaskViewModel tvm;
 
-    public void setTask(Task task) {
-        this.task = task;
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        if (getActivity() == null)
+            return;
+
+
+        tvm = ViewModelProviders.of(getActivity()).get(TaskViewModel.class);
+        this.task = tvm.getCurrentTask().getValue();
     }
 
     @Nullable
@@ -42,8 +55,18 @@ public class DetailTaskFragment extends Fragment {
         return binding.getRoot();
     }
 
-    public String convertDate(Long timestamp) {
-        SimpleDateFormat sdt = new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault());
+    public String convertDate(long timestamp) {
+        SimpleDateFormat sdt = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
         return sdt.format(new Date(timestamp));
+    }
+
+    public void onCloseTaskClick() {
+        if (task.end_date != null)
+            return;
+
+        Task closedTask = new Task(task);
+        closedTask.complete = DbContract.ToDoEntry.COMPLETE_CODE;
+        tvm.updateTask(closedTask);
+        getFragmentManager().popBackStack();
     }
 }

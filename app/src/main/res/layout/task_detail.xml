@@ -67,6 +67,7 @@
             android:singleLine="false"
             android:text="@{task.end_date != null ? ut.convertDate(task.end_date) : @string/close_task}"
             android:textColor="@{task.end_date != null ? @android:color/black : @android:color/holo_blue_dark}"
+            android:onClick="@{() -> ut.onCloseTaskClick()}"
             android:textSize="18sp"
             app:layout_constraintBaseline_toBaselineOf="@+id/detail_tvAddDate"
             app:layout_constraintEnd_toEndOf="@+id/detail_tvTaskName"

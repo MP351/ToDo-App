@@ -23,6 +23,7 @@ public class TaskViewModel extends AndroidViewModel {
     private final String ARCHIVED    = "ARCHIVED";
 
     private MutableLiveData<Boolean> swipeEnabled = new MutableLiveData<>();
+    private MutableLiveData<Task> currentTask = new MutableLiveData<>();
     private TaskRepository taskRepository;
     private MutableLiveData<String> queryTrigger = new MutableLiveData<>();
     private final LiveData<List<Task>> tasks = Transformations.switchMap(queryTrigger,
@@ -99,5 +100,13 @@ public class TaskViewModel extends AndroidViewModel {
 
     public LiveData<Boolean> isSwipeEnabled() {
         return swipeEnabled;
+    }
+
+    public LiveData<Task> getCurrentTask() {
+        return currentTask;
+    }
+
+    public void setCurrentTask(Task task) {
+        currentTask.setValue(task);
     }
 }
