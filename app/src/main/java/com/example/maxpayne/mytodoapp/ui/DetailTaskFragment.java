@@ -66,6 +66,7 @@ public class DetailTaskFragment extends Fragment {
 
         Task closedTask = new Task(task);
         closedTask.complete = DbContract.ToDoEntry.COMPLETE_CODE;
+        closedTask.end_date = System.currentTimeMillis();
         tvm.updateTask(closedTask);
         getFragmentManager().popBackStack();
     }

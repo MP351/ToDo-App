@@ -18,12 +18,13 @@
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent">
 
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/etTaskName"
-        android:maxLines="2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/detail_dial_task_name" />
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etTaskName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/detail_dial_task_name"
+            android:inputType="textAutoCorrect|textCapSentences"
+            android:maxLines="2" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -37,9 +38,10 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/etTaskDescription"
-            android:maxLines="5"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/detail_dial_descr" />
+            android:hint="@string/detail_dial_descr"
+            android:inputType="textAutoCorrect|textCapSentences"
+            android:maxLines="5" />
     </com.google.android.material.textfield.TextInputLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
