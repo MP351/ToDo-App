@@ -2,6 +2,9 @@ package com.example.maxpayne.mytodoapp.ui;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ClickableSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +29,7 @@ import androidx.lifecycle.ViewModelProviders;
 public class DetailTaskFragment extends Fragment {
     private Task task;
     private TaskViewModel tvm;
+    private SpannableString endDate;
 
     @Override
     public void onAttach(Context context) {
@@ -52,6 +56,17 @@ public class DetailTaskFragment extends Fragment {
         binding.setTask(task);
         binding.setUt(this);
 
+        if (task.end_date == null) {
+            endDate = new SpannableString(getString(R.string.close_task));
+            endDate.setSpan(new ClickableSpan() {
+                @Override
+                public void onClick(@NonNull View widget) {
+                    onCloseTaskClick();
+                }
+            }, 0, getString(R.string.close_task).length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        }
+
+        binding.detailTvEndDate.setText(endDate);
         return binding.getRoot();
     }
 

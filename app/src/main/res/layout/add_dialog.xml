@@ -22,6 +22,7 @@
             android:id="@+id/etTaskName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:focusable="auto"
             android:hint="@string/detail_dial_task_name"
             android:inputType="textAutoCorrect|textCapSentences"
             android:maxLines="2" />
