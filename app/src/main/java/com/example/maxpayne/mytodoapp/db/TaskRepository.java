@@ -1,22 +1,15 @@
 package com.example.maxpayne.mytodoapp.db;
 
 import android.app.Application;
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MutableLiveData;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import android.os.AsyncTask;
 
-import com.example.maxpayne.mytodoapp.db.DbContract;
 import com.example.maxpayne.mytodoapp.db.dao.Database;
 import com.example.maxpayne.mytodoapp.db.dao.Task;
 import com.example.maxpayne.mytodoapp.db.dao.TaskDao;
 
 import java.util.List;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 
 public class TaskRepository{
     private Database db;
@@ -31,7 +24,7 @@ public class TaskRepository{
     }
 
     public LiveData<List<Task>> getTasks() {
-        return db.taskDao().getAllAsLiveData();
+        return db.taskDao().getAll();
     }
 
     public LiveData<List<Task>> getActive() {

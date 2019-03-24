@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:logo="@mipmap/icon_launcher"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.MainActivity">
+        <activity android:name=".ui.MainActivityContainer">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

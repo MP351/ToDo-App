@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav"
+    app:startDestination="@id/task_list_fragment">
+
+    <fragment
+        android:id="@+id/task_list_fragment"
+        android:name="com.example.maxpayne.mytodoapp.nc.TaskListFragment"
+        android:label="fragment_task_list_fragment"
+        tools:layout="@layout/fragment_task_list_fragment" >
+        <action
+            android:id="@+id/action_task_list_fragment_to_addDialog"
+            app:destination="@id/addDialog" />
+        <action
+            android:id="@+id/action_task_list_fragment_to_detailTaskDialog"
+            app:destination="@id/detailTaskDialog" />
+    </fragment>
+    <fragment
+        android:id="@+id/addDialog"
+        android:name="com.example.maxpayne.mytodoapp.ui.AddDialog"
+        android:label="add_dialog"
+        tools:layout="@layout/add_dialog" />
+    <fragment
+        android:id="@+id/detailTaskDialog"
+        android:name="com.example.maxpayne.mytodoapp.ui.DetailTaskDialog"
+        android:label="detail_task"
+        tools:layout="@layout/detail_task" />
+</navigation>

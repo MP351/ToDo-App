@@ -5,6 +5,6 @@
         android:id="@+id/groupRecent"
         android:title="@string/detail_dial_task_name"
         app:showAsAction="ifRoom"
-        app:actionViewClass="android.support.v7.widget.AppCompatSpinner"
+        app:actionViewClass="androidx.appcompat.widget.AppCompatSpinner"
         />
 </menu>

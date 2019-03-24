@@ -1,15 +1,14 @@
 package com.example.maxpayne.mytodoapp.db.dao;
 
-import android.arch.lifecycle.LiveData;
-import android.arch.persistence.room.Dao;
-import android.arch.persistence.room.Delete;
-import android.arch.persistence.room.Insert;
-import android.arch.persistence.room.Query;
-import android.arch.persistence.room.Update;
+import androidx.lifecycle.LiveData;
+import androidx.room.Dao;
+import androidx.room.Delete;
+import androidx.room.Insert;
+import androidx.room.Query;
+import androidx.room.Update;
 
 import com.example.maxpayne.mytodoapp.db.DbContract;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Dao
@@ -33,7 +32,7 @@ public interface TaskDao {
             DbContract.ToDoEntry.COLUMN_NAME_COMPLETE + " = :completeCode";
 
     @Query(GET_All_SQL)
-    LiveData<List<Task>> getAllAsLiveData();
+    LiveData<List<Task>> getAll();
 
     @Query(GET_TEMPLATE)
     LiveData<List<Task>> getTasks(int archivedCode, int completeCode);

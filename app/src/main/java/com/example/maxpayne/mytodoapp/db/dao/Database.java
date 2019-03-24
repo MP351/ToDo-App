@@ -1,15 +1,15 @@
 package com.example.maxpayne.mytodoapp.db.dao;
 
-import android.arch.persistence.db.SupportSQLiteDatabase;
-import android.arch.persistence.room.Room;
-import android.arch.persistence.room.RoomDatabase;
-import android.arch.persistence.room.migration.Migration;
+import androidx.sqlite.db.SupportSQLiteDatabase;
+import androidx.room.Room;
+import androidx.room.RoomDatabase;
+import androidx.room.migration.Migration;
 import android.content.Context;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.example.maxpayne.mytodoapp.db.DbContract;
 
-@android.arch.persistence.room.Database(entities = {Task.class}, version = DbContract.DB_VERSION)
+@androidx.room.Database(entities = {Task.class}, version = DbContract.DB_VERSION)
 public abstract class Database extends RoomDatabase {
     private static Database INSTANCE;
     public abstract TaskDao taskDao();
