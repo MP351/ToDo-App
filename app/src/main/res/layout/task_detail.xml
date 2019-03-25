@@ -47,12 +47,13 @@
 
         <TextView
             android:id="@+id/detail_tvAddDate"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:lines="2"
             android:singleLine="false"
-            android:text="@{ut.convertDate(task.add_date)}"
+            android:text='@{@string/detail_dial_add_date + "\n" + ut.convertDate(task.add_date)}'
+            android:textAlignment="textStart"
             android:textColor="@android:color/black"
             android:textSize="18sp"
             app:layout_constraintStart_toStartOf="@+id/detail_tvTaskName"
@@ -61,16 +62,19 @@
 
         <TextView
             android:id="@+id/detail_tvEndDate"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
             android:lines="2"
-            android:singleLine="false"
-            android:text="@{task.end_date != null ? ut.convertDate(task.end_date) : @string/close_task}"
-            android:textColor="@{task.end_date != null ? @android:color/black : @android:color/holo_blue_dark}"
             android:onClick="@{() -> ut.onCloseTaskClick()}"
+            android:singleLine="false"
+            android:text='@{task.end_date != null ? @string/detail_dial_end_date + "\n" + ut.convertDate(task.end_date) : @string/close_task}'
+            android:textAlignment="textEnd"
+            android:textColor="@{task.end_date != null ? @android:color/black : @android:color/holo_blue_dark}"
             android:textSize="18sp"
             app:layout_constraintBaseline_toBaselineOf="@+id/detail_tvAddDate"
             app:layout_constraintEnd_toEndOf="@+id/detail_tvTaskName"
+            app:layout_constraintStart_toEndOf="@+id/detail_tvAddDate"
             tools:text="@string/detail_dial_end_date" />
 
         <LinearLayout

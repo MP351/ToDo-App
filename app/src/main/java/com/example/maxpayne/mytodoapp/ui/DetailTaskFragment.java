@@ -71,7 +71,7 @@ public class DetailTaskFragment extends Fragment {
     }
 
     public String convertDate(long timestamp) {
-        SimpleDateFormat sdt = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+        SimpleDateFormat sdt = new SimpleDateFormat("dd MMMM yyyy", Locale.getDefault());
         return sdt.format(new Date(timestamp));
     }
 

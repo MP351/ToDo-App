@@ -28,11 +28,6 @@ public class MainActivityContainer extends AppCompatActivity
     TaskViewModel tvm;
     ActionBar actionBar;
 
-    final String NAV_TAG = "LAST_NAV_TAG";
-    final String TITLE_TAG = "LAST_TITLE_TAG";
-    int lastNav;
-    String title;
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,9 +51,9 @@ public class MainActivityContainer extends AppCompatActivity
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
 
+        tvm.getTitle().observe(this, title -> actionBar.setTitle(title));
+
         if (savedInstanceState == null) {
-            lastNav = R.id.nav_active;
-            actionBar.setTitle(R.string.title_active);
             FragmentManager manager = getSupportFragmentManager();
             manager.beginTransaction()
                     .add(R.id.container, new TaskListFragment())
@@ -77,28 +72,18 @@ public class MainActivityContainer extends AppCompatActivity
         switch (item.getItemId()) {
             case R.id.nav_active:
                 tvm.queryActive();
-                actionBar.setTitle(R.string.title_active);
-                lastNav = R.id.nav_active;
                 break;
             case R.id.nav_incomplete:
                 tvm.queryIncomplete();
-                actionBar.setTitle(R.string.title_incomplete);
-                lastNav = R.id.nav_incomplete;
                 break;
             case R.id.nav_complete:
                 tvm.queryComplete();
-                actionBar.setTitle(R.string.title_complete);
-                lastNav = R.id.nav_complete;
                 break;
             case R.id.nav_cancelled:
                 tvm.queryCancelled();
-                actionBar.setTitle(R.string.title_cancelled);
-                lastNav = R.id.nav_cancelled;
                 break;
             case R.id.nav_archive:
                 tvm.queryArchived();
-                actionBar.setTitle(R.string.title_archived);
-                lastNav = R.id.nav_archive;
                 break;
         }
     }
@@ -149,20 +134,5 @@ public class MainActivityContainer extends AppCompatActivity
         } else {
             actionBar.setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
         }
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        outState.putInt(NAV_TAG, lastNav);
-        outState.putString(TITLE_TAG, title);
-        super.onSaveInstanceState(outState);
-    }
-
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-
-        lastNav = savedInstanceState.getInt(NAV_TAG);
-        title = savedInstanceState.getString(TITLE_TAG);
     }
 }

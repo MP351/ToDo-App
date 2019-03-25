@@ -10,6 +10,7 @@ import androidx.fragment.app.DialogFragment;
 
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -41,6 +42,7 @@ public class AddDialog extends DialogFragment {
                 .setPositiveButton(R.string.ok, null)
                 .setNegativeButton(R.string.cancel, (dialogInterface, i) -> getDialog().dismiss());
 
+        etTaskName.requestFocus();
         return builder.create();
     }
 
@@ -59,6 +61,12 @@ public class AddDialog extends DialogFragment {
                     }
                 }
         );
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
     }
 
     private boolean okToGo() {

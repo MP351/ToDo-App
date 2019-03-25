@@ -1,9 +1,15 @@
 package com.example.maxpayne.mytodoapp.ui;
 
+import android.animation.AnimatorInflater;
+import android.animation.AnimatorSet;
+import android.animation.ValueAnimator;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 
 import com.example.maxpayne.mytodoapp.R;
 import com.example.maxpayne.mytodoapp.db.DbContract;
@@ -37,9 +43,9 @@ public class TaskListFragment extends Fragment implements ListRecyclerViewAdapte
         tvm = ViewModelProviders.of(getActivity()).get(TaskViewModel.class);
         adapter = new ListRecyclerViewAdapter(this, (TaskItemClickListener) getActivity());
 
-
         tvm.getTasks().observe(getActivity(),
                 tasks -> adapter.setData(tasks));
+
         ithc = new ItemTouchHelperCallback(adapter);
     }
 
@@ -54,6 +60,25 @@ public class TaskListFragment extends Fragment implements ListRecyclerViewAdapte
         rv.setAdapter(adapter);
         ItemTouchHelper th = new ItemTouchHelper(ithc);
         th.attachToRecyclerView(rv);
+
+        rv.getViewTreeObserver().addOnPreDrawListener(
+                new ViewTreeObserver.OnPreDrawListener() {
+
+                    @Override
+                    public boolean onPreDraw() {
+                        rv.getViewTreeObserver().removeOnPreDrawListener(this);
+
+                        for (int i = 0; i < rv.getChildCount(); i++) {
+                            View v = rv.getChildAt(i);
+
+                            Animation app = AnimationUtils.loadAnimation(getContext(),
+                                    R.anim.layout_anim_fall_down);
+                            v.setAnimation(app);
+                        }
+
+                        return true;
+                    }
+                });
 
         tvm.isSwipeEnabled().observe(getActivity(),
                 bool -> ithc.setSwipeEnabled(bool));

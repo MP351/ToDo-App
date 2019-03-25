@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 
+import com.example.maxpayne.mytodoapp.R;
 import com.example.maxpayne.mytodoapp.db.DbContract;
 import com.example.maxpayne.mytodoapp.db.dao.Task;
 import com.example.maxpayne.mytodoapp.db.TaskRepository;
@@ -22,30 +23,36 @@ public class TaskViewModel extends AndroidViewModel {
     private final String CANCEL      = "CANCEL";
     private final String ARCHIVED    = "ARCHIVED";
 
-    private MutableLiveData<Boolean> swipeEnabled = new MutableLiveData<>();
-    private MutableLiveData<Task> currentTask = new MutableLiveData<>();
-    private TaskRepository taskRepository;
-    private MutableLiveData<String> queryTrigger = new MutableLiveData<>();
-    private final LiveData<List<Task>> tasks = Transformations.switchMap(queryTrigger,
+    private MutableLiveData<Boolean>    swipeEnabled = new MutableLiveData<>();
+    private MutableLiveData<String>     title = new MutableLiveData<>();
+    private MutableLiveData<Task>       currentTask = new MutableLiveData<>();
+    private TaskRepository              taskRepository;
+    private MutableLiveData<String>     queryTrigger = new MutableLiveData<>();
+    private final LiveData<List<Task>>  tasks = Transformations.switchMap(queryTrigger,
             code -> {
                 switch (code) {
                     case ACTIVE:
                         swipeEnabled.setValue(true);
+                        title.postValue(getApplication().getString(R.string.title_active));
                         return taskRepository.getActive();
                     case INCOMPLETE:
                         swipeEnabled.setValue(true);
+                        title.postValue(getApplication().getString(R.string.title_incomplete));
                         return taskRepository.getTasks(DbContract.ToDoEntry.NOT_ARCHIVED_CODE,
                                 DbContract.ToDoEntry.INCOMPLETE_CODE);
                     case COMPLETE:
                         swipeEnabled.setValue(true);
+                        title.postValue(getApplication().getString(R.string.title_complete));
                         return taskRepository.getTasks(DbContract.ToDoEntry.NOT_ARCHIVED_CODE,
                                 DbContract.ToDoEntry.COMPLETE_CODE);
                     case CANCEL:
                         swipeEnabled.setValue(false);
+                        title.postValue(getApplication().getString(R.string.title_cancelled));
                         return taskRepository.getTasks(DbContract.ToDoEntry.NOT_ARCHIVED_CODE,
                                 DbContract.ToDoEntry.CANCEL_CODE);
                     case ARCHIVED:
                         swipeEnabled.setValue(false);
+                        title.postValue(getApplication().getString(R.string.title_archived));
                         return taskRepository.getArchived();
                 }
                 return taskRepository.getActive();
@@ -94,10 +101,6 @@ public class TaskViewModel extends AndroidViewModel {
         taskRepository.updateTask(task);
     }
 
-    public void setSwipeEnabled(boolean enabled){
-        swipeEnabled.setValue(enabled);
-    }
-
     public LiveData<Boolean> isSwipeEnabled() {
         return swipeEnabled;
     }
@@ -108,5 +111,9 @@ public class TaskViewModel extends AndroidViewModel {
 
     public void setCurrentTask(Task task) {
         currentTask.setValue(task);
+    }
+
+    public LiveData<String> getTitle() {
+        return title;
     }
 }
