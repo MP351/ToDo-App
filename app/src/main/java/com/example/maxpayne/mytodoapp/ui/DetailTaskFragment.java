@@ -4,6 +4,9 @@ import android.content.Context;
 import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.SpannedString;
+import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -56,29 +59,39 @@ public class DetailTaskFragment extends Fragment {
         binding.setTask(task);
         binding.setUt(this);
 
-        if (task.end_date == null) {
-            endDate = new SpannableString(getString(R.string.close_task));
-            endDate.setSpan(new ClickableSpan() {
-                @Override
-                public void onClick(@NonNull View widget) {
-                    onCloseTaskClick();
-                }
-            }, 0, getString(R.string.close_task).length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        }
+        binding.detailTvAddDate.setText(
+                getDateString(getString(R.string.detail_dial_add_date), task.add_date));
+        binding.detailTvEndDate.setText(makeEndDateText());
+        binding.detailTvEndDate.setMovementMethod(LinkMovementMethod.getInstance());
 
-        binding.detailTvEndDate.setText(endDate);
+
         return binding.getRoot();
     }
 
-    public String convertDate(Long timestamp, Integer completeCode) {
-        //android:text='@{task.end_date != null ? @string/detail_dial_end_date + "\n" + ut.convertDate(task.end_date) : @string/close_task}'
-        SimpleDateFormat sdt = new SimpleDateFormat("dd MMMM yyyy", Locale.getDefault());
-        if (timestamp == null) {
-            if (completeCode == DbContract.ToDoEntry.CANCEL_CODE)
-                return getString(R.string.cancelled);
-            return getString(R.string.complete_task);
+    public SpannableString makeEndDateText() {
+        String completeTask = getString(R.string.complete_task);
+        if (task.end_date == null) {
+            if (task.complete == DbContract.ToDoEntry.CANCEL_CODE) {
+                return new SpannableString(getString(R.string.task_cancelled));
+            } else {
+                SpannableString complete = new SpannableString(completeTask);
+                complete.setSpan(new ClickableSpan() {
+                    @Override
+                    public void onClick(@NonNull View widget) {
+                        onCloseTaskClick();
+                    }
+                }, 0, completeTask.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                return complete;
+            }
+        } else {
+            return getDateString(getString(R.string.detail_dial_end_date), task.end_date);
         }
-        return sdt.format(new Date(timestamp));
+    }
+
+    public SpannableString getDateString(String prefix, long timestamp) {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd MMMM yy", Locale.getDefault());
+        String sb = prefix + "\n" + sdf.format(new Date(timestamp));
+        return new SpannableString(sb);
     }
 
     public void onCloseTaskClick() {

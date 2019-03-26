@@ -94,4 +94,9 @@ public class ListRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewHo
         void updateTask(Task task);
         void archiveOrCancelTask(Task task, int CODE);
     }
+
+    @Override
+    public void onViewAttachedToWindow(@NonNull RecyclerViewHolder holder) {
+        super.onViewAttachedToWindow(holder);
+    }
 }

@@ -42,8 +42,8 @@ public class MyItemAnimator extends DefaultItemAnimator {
         ObjectAnimator slideInRight = ObjectAnimator.ofFloat(holder.itemView, RecyclerView.TRANSLATION_X, -holder.itemView.getWidth(), 0);
         ObjectAnimator slideInFromBottom = ObjectAnimator.ofFloat(holder.itemView, RecyclerView.TRANSLATION_Y, -holder.itemView.getHeight(), 0);
         ObjectAnimator fadeIn = ObjectAnimator.ofFloat(holder.itemView, View.ALPHA, 0, 1);
-        as.playTogether(slideInFromBottom, fadeIn);
-        as.setDuration(1000);
+        as.playTogether(slideInRight, fadeIn);
+        as.setDuration(500);
         as.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
