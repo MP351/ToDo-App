@@ -70,13 +70,21 @@ public class DetailTaskFragment extends Fragment {
         return binding.getRoot();
     }
 
-    public String convertDate(long timestamp) {
+    public String convertDate(Long timestamp, Integer completeCode) {
+        //android:text='@{task.end_date != null ? @string/detail_dial_end_date + "\n" + ut.convertDate(task.end_date) : @string/close_task}'
         SimpleDateFormat sdt = new SimpleDateFormat("dd MMMM yyyy", Locale.getDefault());
+        if (timestamp == null) {
+            if (completeCode == DbContract.ToDoEntry.CANCEL_CODE)
+                return getString(R.string.cancelled);
+            return getString(R.string.complete_task);
+        }
         return sdt.format(new Date(timestamp));
     }
 
     public void onCloseTaskClick() {
         if (task.end_date != null)
+            return;
+        if (task.complete == DbContract.ToDoEntry.CANCEL_CODE)
             return;
 
         Task closedTask = new Task(task);

@@ -1,21 +1,16 @@
 package com.example.maxpayne.mytodoapp.ui;
 
-import android.animation.AnimatorInflater;
-import android.animation.AnimatorSet;
-import android.animation.ValueAnimator;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 
 import com.example.maxpayne.mytodoapp.R;
 import com.example.maxpayne.mytodoapp.db.DbContract;
 import com.example.maxpayne.mytodoapp.db.dao.Task;
 import com.example.maxpayne.mytodoapp.recycler_view.ItemTouchHelperCallback;
 import com.example.maxpayne.mytodoapp.recycler_view.ListRecyclerViewAdapter;
+import com.example.maxpayne.mytodoapp.recycler_view.MyItemAnimator;
 import com.example.maxpayne.mytodoapp.recycler_view.TaskItemClickListener;
 import com.example.maxpayne.mytodoapp.recycler_view.TaskViewModel;
 import com.google.android.material.snackbar.Snackbar;
@@ -58,27 +53,11 @@ public class TaskListFragment extends Fragment implements ListRecyclerViewAdapte
         rv = (RecyclerView) inflater.inflate(R.layout.rv_layout, container, false);
         rv.setLayoutManager(new LinearLayoutManager(getContext()));
         rv.setAdapter(adapter);
+
+        rv.setItemAnimator(new MyItemAnimator());
+
         ItemTouchHelper th = new ItemTouchHelper(ithc);
         th.attachToRecyclerView(rv);
-
-        rv.getViewTreeObserver().addOnPreDrawListener(
-                new ViewTreeObserver.OnPreDrawListener() {
-
-                    @Override
-                    public boolean onPreDraw() {
-                        rv.getViewTreeObserver().removeOnPreDrawListener(this);
-
-                        for (int i = 0; i < rv.getChildCount(); i++) {
-                            View v = rv.getChildAt(i);
-
-                            Animation app = AnimationUtils.loadAnimation(getContext(),
-                                    R.anim.layout_anim_fall_down);
-                            v.setAnimation(app);
-                        }
-
-                        return true;
-                    }
-                });
 
         tvm.isSwipeEnabled().observe(getActivity(),
                 bool -> ithc.setSwipeEnabled(bool));
