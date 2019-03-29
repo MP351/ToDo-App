@@ -14,8 +14,8 @@
     <string name="close">Закрыть</string>
     <string name="close_task">Завершить задание</string>
     <string name="detail_dial_task_name">Задание</string>
-    <string name="detail_dial_add_date">Дата добавления</string>
-    <string name="detail_dial_end_date">Дата завершения</string>
+    <string name="detail_dial_add_date">Добавлено</string>
+    <string name="detail_dial_end_date">Завершено</string>
     <string name="detail_dial_descr">Описание</string>
     <string name="to_archive">Архивировать</string>
     <string name="to_cancelled">Отменить</string>

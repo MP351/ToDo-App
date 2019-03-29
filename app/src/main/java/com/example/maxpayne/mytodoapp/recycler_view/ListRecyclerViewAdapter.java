@@ -42,7 +42,6 @@ public class ListRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewHo
     @Override
     public void onBindViewHolder(@NonNull RecyclerViewHolder recyclerViewHolder, int i) {
         Task task = mDiffer.getCurrentList().get(i);
-
         recyclerViewHolder.bindView(task);
     }
 
@@ -94,5 +93,10 @@ public class ListRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewHo
         //void deleteTask(Task task);
         void updateTask(Task task);
         void archiveOrCancelTask(Task task, int CODE);
+    }
+
+    @Override
+    public void onViewAttachedToWindow(@NonNull RecyclerViewHolder holder) {
+        super.onViewAttachedToWindow(holder);
     }
 }

@@ -10,6 +10,7 @@ import com.example.maxpayne.mytodoapp.db.DbContract;
 import com.example.maxpayne.mytodoapp.db.dao.Task;
 import com.example.maxpayne.mytodoapp.recycler_view.ItemTouchHelperCallback;
 import com.example.maxpayne.mytodoapp.recycler_view.ListRecyclerViewAdapter;
+import com.example.maxpayne.mytodoapp.recycler_view.MyItemAnimator;
 import com.example.maxpayne.mytodoapp.recycler_view.TaskItemClickListener;
 import com.example.maxpayne.mytodoapp.recycler_view.TaskViewModel;
 import com.google.android.material.snackbar.Snackbar;
@@ -37,9 +38,9 @@ public class TaskListFragment extends Fragment implements ListRecyclerViewAdapte
         tvm = ViewModelProviders.of(getActivity()).get(TaskViewModel.class);
         adapter = new ListRecyclerViewAdapter(this, (TaskItemClickListener) getActivity());
 
-
         tvm.getTasks().observe(getActivity(),
                 tasks -> adapter.setData(tasks));
+
         ithc = new ItemTouchHelperCallback(adapter);
     }
 
@@ -52,6 +53,9 @@ public class TaskListFragment extends Fragment implements ListRecyclerViewAdapte
         rv = (RecyclerView) inflater.inflate(R.layout.rv_layout, container, false);
         rv.setLayoutManager(new LinearLayoutManager(getContext()));
         rv.setAdapter(adapter);
+
+        rv.setItemAnimator(new MyItemAnimator());
+
         ItemTouchHelper th = new ItemTouchHelper(ithc);
         th.attachToRecyclerView(rv);
 
