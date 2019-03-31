@@ -48,11 +48,28 @@ public abstract class Database extends RoomDatabase {
         }
     };
 
+    private static final Migration MIGRATION_3_4 = new Migration(3, 4) {
+        @Override
+        public void migrate(@NonNull SupportSQLiteDatabase database) {
+            try {
+                database.beginTransaction();
+                database.execSQL("ALTER TABLE " + DbContract.ToDoEntry.TABLE_NAME +
+                        " ADD " + DbContract.ToDoEntry.COLUMN_NAME_DEADLINE + " INTEGER DEFAULT " +
+                         DbContract.ToDoEntry.TIMELESS_CODE + " NOT NULL");
+
+                database.setTransactionSuccessful();
+            } finally {
+                database.endTransaction();
+            }
+        }
+    };
+
     public static Database getInstance(Context context) {
         if (INSTANCE == null) {
             INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                     Database.class, DbContract.DB_NAME)
                     .addMigrations(MIGRATION_2_3)
+                    .addMigrations(MIGRATION_3_4)
                     .build();
         }
         return INSTANCE;

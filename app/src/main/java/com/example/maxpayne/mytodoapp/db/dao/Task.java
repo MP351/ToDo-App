@@ -9,6 +9,9 @@ import androidx.annotation.Nullable;
 
 import com.example.maxpayne.mytodoapp.db.DbContract;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 import java.util.Objects;
 
 @Entity(tableName = DbContract.ToDoEntry.TABLE_NAME)
@@ -19,7 +22,8 @@ public class Task {
     }
 
     public Task(@NonNull Integer _id, String task, @NonNull Long add_date, @Nullable Long end_date,
-                @NonNull Integer complete, String description, @NonNull Integer archived) {
+                @NonNull Integer complete, String description, @NonNull Integer archived,
+                @NonNull Long deadline) {
         this._id = _id;
         this.task = task;
         this.add_date = add_date;
@@ -27,26 +31,29 @@ public class Task {
         this.complete = complete;
         this.description = description;
         this.archived = archived;
+        this.deadline = deadline;
     }
 
     @Ignore
-    public Task(String task, @NonNull Long add_date, @Nullable Long end_date,
-                @NonNull Integer complete, String description, @NonNull Integer archived) {
+    public Task(String task, @NonNull Long add_date, @Nullable Long end_date, @NonNull Integer complete,
+                String description, @NonNull Integer archived, @NonNull Long deadline) {
         this.task = task;
         this.add_date = add_date;
         this.end_date = end_date;
         this.complete = complete;
         this.description = description;
         this.archived = archived;
+        this.deadline = deadline;
     }
 
     @Ignore
-    public Task(String task, String description) {
+    public Task(String task, String description, long deadline) {
         this.task = task;
         this.add_date = System.currentTimeMillis();
         this.complete = DbContract.ToDoEntry.INCOMPLETE_CODE;
         this.description = description;
         this.archived = DbContract.ToDoEntry.NOT_ARCHIVED_CODE;
+        this.deadline = deadline;
     }
 
     @Ignore
@@ -58,6 +65,7 @@ public class Task {
         this.complete = task.complete;
         this.description = task.description;
         this.archived = task.archived;
+        this.deadline = task.deadline;
     }
 
     @NonNull
@@ -87,6 +95,10 @@ public class Task {
     @ColumnInfo(name = DbContract.ToDoEntry.COLUMN_NAME_ARCHIVED)
     public Integer archived;
 
+    @NonNull
+    @ColumnInfo(name = DbContract.ToDoEntry.COLUMN_NAME_DEADLINE)
+    public Long deadline;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -98,11 +110,23 @@ public class Task {
                 Objects.equals(end_date, task1.end_date) &&
                 Objects.equals(complete, task1.complete) &&
                 Objects.equals(description, task1.description) &&
-                Objects.equals(archived, task1.archived);
+                Objects.equals(archived, task1.archived) &&
+                Objects.equals(deadline, task1.deadline);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(_id, task, add_date, end_date, complete, description, archived);
+        return Objects.hash(_id, task, add_date, end_date, complete, description, archived, deadline);
+    }
+
+    @Ignore
+    public String convertDate(long timestamp) {
+        SimpleDateFormat sdt = new SimpleDateFormat("dd MMMM yyyy", Locale.getDefault());
+
+        if (timestamp == DbContract.ToDoEntry.TIMELESS_CODE) {
+            return "Бессрочное";
+        } else {
+            return sdt.format(new Date(timestamp));
+        }
     }
 }

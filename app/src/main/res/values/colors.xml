@@ -3,4 +3,7 @@
     <color name="colorPrimary">#2196f3</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
+    <color name="item_today_task">#E91E63</color>
+    <color name="item_tomorrow_task">#F57C00</color>
+    <color name="item_date_task">#388e3C</color>
 </resources>

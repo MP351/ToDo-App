@@ -8,8 +8,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
-import com.example.maxpayne.mytodoapp.databinding.TaskItemBinding;
 import com.example.maxpayne.mytodoapp.R;
+import com.example.maxpayne.mytodoapp.databinding.TaskItemNewBinding;
 import com.example.maxpayne.mytodoapp.db.DbContract;
 import com.example.maxpayne.mytodoapp.db.dao.Task;
 
@@ -28,14 +28,14 @@ public class ListRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewHo
     @NonNull
     @Override
     public RecyclerViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        TaskItemBinding binding = DataBindingUtil.inflate(
+        TaskItemNewBinding binding = DataBindingUtil.inflate(
                 LayoutInflater.from(viewGroup.getContext()),
-                R.layout.task_item,
+                R.layout.task_item_new,
                 viewGroup,
                 false
         );
 
-        binding.setOnClickHandler(mOnClickListener);
+        binding.setOnClickListener(mOnClickListener);
         return new RecyclerViewHolder(binding);
     }
 
@@ -93,10 +93,5 @@ public class ListRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewHo
         //void deleteTask(Task task);
         void updateTask(Task task);
         void archiveOrCancelTask(Task task, int CODE);
-    }
-
-    @Override
-    public void onViewAttachedToWindow(@NonNull RecyclerViewHolder holder) {
-        super.onViewAttachedToWindow(holder);
     }
 }

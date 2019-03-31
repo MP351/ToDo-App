@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="task"
+            type="com.example.maxpayne.mytodoapp.db.dao.Task" />
+        <variable
+            name="onClickListener"
+            type="com.example.maxpayne.mytodoapp.recycler_view.TaskItemClickListener" />
+        <variable
+            name="itemEntry"
+            type="com.example.maxpayne.mytodoapp.db.DbContract.ToDoEntry" />
+        <import type="com.example.maxpayne.mytodoapp.recycler_view.DateUtils" />
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:clickable="true"
+        android:focusable="true"
+        android:background="?android:selectableItemBackground"
+        android:onClick="@{() -> onClickListener.onItemClick(task)}"
+        android:layout_width="match_parent"
+        android:layout_height="70dp">
+
+        <TextView
+            android:id="@+id/tvItemId"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="8dp"
+            android:gravity="center_vertical|center_horizontal"
+            android:text="@{String.valueOf(task._id)}"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="1" />
+
+        <TextView
+            android:id="@+id/tvItemTaskName"
+            android:layout_width="0dp"
+            android:layout_height="28dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="16dp"
+            android:fontFamily="sans-serif-medium"
+            android:gravity="center_vertical"
+            android:text="@{task.task}"
+            android:textColor="@android:color/black"
+            android:textSize="20sp"
+            app:layout_constraintBaseline_toBaselineOf="@+id/tvItemId"
+            app:layout_constraintEnd_toStartOf="@+id/cbComplete"
+            app:layout_constraintStart_toEndOf="@+id/tvItemId"
+            tools:text="@string/detail_dial_task_name" />
+
+        <TextView
+            android:id="@+id/tvItemAddDate"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:gravity="center_vertical|start"
+            android:text="@{DateUtils.convertDate(task.add_date)}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/tvItemTaskName"
+            app:layout_constraintTop_toBottomOf="@+id/tvItemTaskName"
+            tools:text="@string/detail_dial_add_date" />
+
+        <TextView
+            android:id="@+id/tvItemEndDeadDate"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical|end"
+            android:text="@{task.end_date == null ? DateUtils.makeDeadlineStringRV(task.deadline) : DateUtils.makeEndDateStringRV(task.end_date)}"
+            app:layout_constraintBaseline_toBaselineOf="@+id/tvItemAddDate"
+            app:layout_constraintEnd_toEndOf="@+id/cbComplete"
+            tools:text="@string/detail_dial_end_date" />
+
+        <androidx.appcompat.widget.AppCompatCheckBox
+            android:id="@+id/cbComplete"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginEnd="8dp"
+            android:checked="@{task.complete == itemEntry.COMPLETE_CODE}"
+            android:clickable="false"
+            app:layout_constraintBaseline_toBaselineOf="@+id/tvItemTaskName"
+            app:layout_constraintEnd_toEndOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

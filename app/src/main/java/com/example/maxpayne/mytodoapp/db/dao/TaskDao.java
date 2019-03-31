@@ -17,7 +17,9 @@ public interface TaskDao {
     String GET_ACTIVE_SQL = ("SELECT * FROM " + DbContract.ToDoEntry.TABLE_NAME + " WHERE " +
             DbContract.ToDoEntry.COLUMN_NAME_COMPLETE + " <> " + DbContract.ToDoEntry.CANCEL_CODE +
             " AND " +
-            DbContract.ToDoEntry.COLUMN_NAME_ARCHIVED + " <> " + DbContract.ToDoEntry.ARCHIVED_CODE);
+            DbContract.ToDoEntry.COLUMN_NAME_ARCHIVED + " <> " + DbContract.ToDoEntry.ARCHIVED_CODE +
+            " ORDER BY " + DbContract.ToDoEntry.COLUMN_NAME_DEADLINE + "," +
+            DbContract.ToDoEntry._ID + " ASC");
 
     String GET_NOT_ARCHIVED = "SELECT * FROM " + DbContract.ToDoEntry.TABLE_NAME + " WHERE " +
             DbContract.ToDoEntry.COLUMN_NAME_ARCHIVED + " = " + DbContract.ToDoEntry.NOT_ARCHIVED_CODE +
@@ -25,11 +27,14 @@ public interface TaskDao {
             DbContract.ToDoEntry.COLUMN_NAME_COMPLETE + " = :completeCode";
 
     String GET_ARCHIVED = "SELECT * FROM " + DbContract.ToDoEntry.TABLE_NAME + " WHERE " +
-            DbContract.ToDoEntry.COLUMN_NAME_ARCHIVED + " = " + DbContract.ToDoEntry.ARCHIVED_CODE;
+            DbContract.ToDoEntry.COLUMN_NAME_ARCHIVED + " = " + DbContract.ToDoEntry.ARCHIVED_CODE +
+            " ORDER BY " + DbContract.ToDoEntry.COLUMN_NAME_DEADLINE + "," + DbContract.ToDoEntry._ID +
+            " ASC";
 
     String GET_TEMPLATE = "SELECT * FROM " + DbContract.ToDoEntry.TABLE_NAME + " WHERE " +
             DbContract.ToDoEntry.COLUMN_NAME_ARCHIVED + " = :archivedCode AND " +
-            DbContract.ToDoEntry.COLUMN_NAME_COMPLETE + " = :completeCode";
+            DbContract.ToDoEntry.COLUMN_NAME_COMPLETE + " = :completeCode ORDER BY " +
+            DbContract.ToDoEntry.COLUMN_NAME_DEADLINE + "," + DbContract.ToDoEntry._ID + " ASC";
 
     @Query(GET_All_SQL)
     LiveData<List<Task>> getAll();

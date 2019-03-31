@@ -101,8 +101,8 @@ public class MainActivityContainer extends AppCompatActivity
     }
 
     @Override
-    public void onDialogPositiveClick(String taskName, String description) {
-        tvm.addTask(new Task(taskName, description));
+    public void onDialogPositiveClick(String taskName, String description, long deadline) {
+        tvm.addTask(new Task(taskName, description, deadline));
     }
 
     @Override

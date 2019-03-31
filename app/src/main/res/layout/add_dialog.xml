@@ -2,7 +2,6 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -32,17 +31,29 @@
         android:id="@+id/tilDescription"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        app:layout_constraintEnd_toEndOf="@+id/tilTaskName"
-        app:layout_constraintStart_toStartOf="@+id/tilTaskName"
-        app:layout_constraintTop_toBottomOf="@+id/tilTaskName">
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="@+id/spDeadline"
+        app:layout_constraintStart_toStartOf="@+id/spDeadline"
+        app:layout_constraintTop_toBottomOf="@+id/spDeadline">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/etTaskDescription"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="43dp"
             android:hint="@string/detail_dial_descr"
             android:inputType="textAutoCorrect|textCapSentences"
             android:maxLines="5" />
     </com.google.android.material.textfield.TextInputLayout>
+
+    <Spinner
+        android:id="@+id/spDeadline"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:spinnerMode="dropdown"
+        app:layout_constraintEnd_toEndOf="@+id/tilTaskName"
+        app:layout_constraintStart_toStartOf="@+id/tilTaskName"
+        app:layout_constraintTop_toBottomOf="@+id/tilTaskName" />
 </androidx.constraintlayout.widget.ConstraintLayout>

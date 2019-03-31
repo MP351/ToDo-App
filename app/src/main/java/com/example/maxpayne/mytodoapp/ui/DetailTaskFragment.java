@@ -2,10 +2,8 @@ package com.example.maxpayne.mytodoapp.ui;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.Spanned;
-import android.text.SpannedString;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.view.LayoutInflater;
@@ -32,7 +30,6 @@ import androidx.lifecycle.ViewModelProviders;
 public class DetailTaskFragment extends Fragment {
     private Task task;
     private TaskViewModel tvm;
-    private SpannableString endDate;
 
     @Override
     public void onAttach(Context context) {
@@ -68,7 +65,7 @@ public class DetailTaskFragment extends Fragment {
         return binding.getRoot();
     }
 
-    public SpannableString makeEndDateText() {
+    private SpannableString makeEndDateText() {
         String completeTask = getString(R.string.complete_task);
         if (task.end_date == null) {
             if (task.complete == DbContract.ToDoEntry.CANCEL_CODE) {
@@ -88,13 +85,13 @@ public class DetailTaskFragment extends Fragment {
         }
     }
 
-    public SpannableString getDateString(String prefix, long timestamp) {
+    private SpannableString getDateString(String prefix, long timestamp) {
         SimpleDateFormat sdf = new SimpleDateFormat("dd MMMM yy", Locale.getDefault());
         String sb = prefix + "\n" + sdf.format(new Date(timestamp));
         return new SpannableString(sb);
     }
 
-    public void onCloseTaskClick() {
+    private void onCloseTaskClick() {
         if (task.end_date != null)
             return;
         if (task.complete == DbContract.ToDoEntry.CANCEL_CODE)
